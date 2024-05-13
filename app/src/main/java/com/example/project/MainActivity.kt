@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -27,6 +29,8 @@ import com.google.android.gms.nearby.connection.Strategy
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     private lateinit var connectionsClient: ConnectionsClient
@@ -60,15 +64,32 @@ class MainActivity : ComponentActivity() {
                             putExtra("ROOM_NAME", roomName.value)
                         }
                         startActivity(intent)
-                    }) {
+                    },
+                        enabled = roomName.value.isNotEmpty(),
+                        modifier = Modifier.padding(bottom = 30.dp)
+
+                        ) {
                         Text("Start Video Conference")
                     }
-                    Button(onClick = {
-                        // Create the intent to start HistoryActivity
-                        val intent = Intent(this@MainActivity, HistoryActivity::class.java)
-                        startActivity(intent)
-                    }) {
-                        Text("View Meeting History")
+
+                    Row {
+                        Button(onClick = {
+                            // Create the intent to start HistoryActivity
+                            val intent = Intent(this@MainActivity, HistoryActivity::class.java)
+                            startActivity(intent)
+                        },
+                            modifier = Modifier.padding(end = 10.dp)
+                            ) {
+                            Text("View Meeting History")
+                        }
+
+                        Button(onClick = {
+                            // Create the intent to start SettingsActivity
+                            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+                            startActivity(intent)
+                        }) {
+                            Text("Settings")
+                        }
                     }
                     // Display the meeting room names
                     LazyColumn {

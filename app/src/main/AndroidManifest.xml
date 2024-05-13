@@ -31,6 +31,6 @@
         </activity>
         <activity android:name=".VideoConferenceActivity" android:theme="@style/Theme.Project"/>
         <activity android:name=".HistoryActivity" android:theme="@style/Theme.Project"/>
-    </application>
+        <activity android:name=".SettingsActivity" android:theme="@style/Theme.Project"/>    </application>
 
 </manifest>
