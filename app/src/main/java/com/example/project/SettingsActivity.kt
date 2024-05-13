@@ -31,6 +31,8 @@ class SettingsActivity : ComponentActivity() {
                 val audioOnly = remember { mutableStateOf(sharedPreferences.getBoolean("AudioOnly", false)) }
 
                 Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Settings")
+
                     Text("Video On by default")
                     Switch(checked = videoOnByDefault.value, onCheckedChange = {
                         sharedPreferences.edit().putBoolean("VideoOnByDefault", it).apply()
