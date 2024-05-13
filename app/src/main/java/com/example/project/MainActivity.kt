@@ -1,6 +1,9 @@
 package com.example.project
 
+import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,11 +34,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import androidx.compose.material3.AlertDialog
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), SensorEventListener {
     private lateinit var connectionsClient: ConnectionsClient
     private val meetingRoomNames = mutableStateListOf<String>()
     private val connectedEndpoints = mutableSetOf<String>() // Maintain a list of connected endpoints
+    private lateinit var sensorManager: SensorManager
+    private var accelerometer: Sensor? = null
+    private val isMoving = mutableStateOf(false)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +103,25 @@ class MainActivity : ComponentActivity() {
                             Text("Settings")
                         }
                     }
+                    if (isMoving.value) {
+                        AlertDialog(
+                            onDismissRequest = {
+                            },
+                            title = {
+                                Text("Warning")
+                            },
+                            text = {
+                                Text("You are moving. Please stop moving to proceed.")
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                }) {
+                                    Text("OK")
+                                }
+                            }
+                        )
+                    }
                     // Display the meeting room names
                     LazyColumn {
                         items(meetingRoomNames) { meetingRoomName ->
@@ -100,6 +131,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     private fun startDiscovery() {
@@ -143,5 +178,33 @@ class MainActivity : ComponentActivity() {
                 // A previously discovered endpoint has gone away.
             }
         }, discoveryOptions)
+    }
+
+    override fun onSensorChanged(event: SensorEvent) {
+        val x = event.values[0]
+        val y = event.values[1]
+        val z = event.values[2]
+
+        val acceleration = Math.sqrt((x * x + y * y + z * z).toDouble()) - SensorManager.GRAVITY_EARTH
+        if (acceleration > 1.7) { // The threshold is subjective and may need to be adjusted
+            isMoving.value = true
+        } else {
+            isMoving.value = false
+            println("Acceleration: $acceleration")
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+        // You can implement this method if you want to react to changes in sensor accuracy
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
     }
 }
