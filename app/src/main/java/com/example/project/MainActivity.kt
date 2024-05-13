@@ -63,6 +63,13 @@ class MainActivity : ComponentActivity() {
                     }) {
                         Text("Start Video Conference")
                     }
+                    Button(onClick = {
+                        // Create the intent to start HistoryActivity
+                        val intent = Intent(this@MainActivity, HistoryActivity::class.java)
+                        startActivity(intent)
+                    }) {
+                        Text("View Meeting History")
+                    }
                     // Display the meeting room names
                     LazyColumn {
                         items(meetingRoomNames) { meetingRoomName ->

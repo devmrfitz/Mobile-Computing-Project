@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -69,5 +71,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.jitsi.meet.sdk)
     implementation (libs.play.services.nearby)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+//    ksp ("androidx.room:room-compiler:2.6.1")
+
 
 }

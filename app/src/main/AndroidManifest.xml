@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,7 +22,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Project">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".VideoConferenceActivity" android:theme="@style/Theme.Project"/>
+        <activity android:name=".HistoryActivity" android:theme="@style/Theme.Project"/>
     </application>
 
 </manifest>
