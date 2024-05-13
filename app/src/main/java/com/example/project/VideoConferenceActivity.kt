@@ -30,14 +30,11 @@ class VideoConferenceActivity : ComponentActivity() {
         GlobalScope.launch {
             viewModel.insert(MeetingRoom(roomName = roomName))
         }
-
-        val serverURL = URL("https://meet.jit.si")
-//        val defaultOptions = JitsiMeetConferenceOptions.Builder()
-//            .setServerURL(serverURL)
-//            .setRoom(roomName) // Use the room name here
-//            .build()
-//        JitsiMeetActivity.launch(this, defaultOptions)
-
-
+        val serverURL = URL("https://jitsi.member.fsf.org/")
+        val defaultOptions = JitsiMeetConferenceOptions.Builder()
+            .setServerURL(serverURL)
+            .setRoom(roomName) // Use the room name here
+            .build()
+        JitsiMeetActivity.launch(this, defaultOptions)
     }
 }

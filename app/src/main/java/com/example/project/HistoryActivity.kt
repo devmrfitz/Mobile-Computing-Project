@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import com.example.project.ui.theme.Purple80
 import com.example.project.ui.theme.PurpleGrey80
 
@@ -63,6 +64,7 @@ class HistoryActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
+                    Text("Previous Meetings", modifier = Modifier.padding(10.dp), fontSize = 20.sp)
                     // Display the list of previous meetings
                     // This is a placeholder. Replace this with your actual UI code.
                     meetingRooms.forEachIndexed { idx, room ->
